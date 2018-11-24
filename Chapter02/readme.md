@@ -1,7 +1,6 @@
 You will learn about the following in this chapter:
-* Operator:
-  =
-* Functions:
+* Operator:<br/> =
+* Functions:<br/>
   main(), printf()
 * Putting together a simple C program
 * Creating integer-valued variables, assigning them values, and displaying those values onscreen
