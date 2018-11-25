@@ -5,7 +5,7 @@ You will learn about the following in this chapter:
   sizeof
 * Function:<br/>
   scanf()
-* THe basic data types that C uses
+* The basic data types that C uses
 * The distinctions between integer types and floating-point types
 * Writing constants and declaring variables of those types
 * How to use the printf() and scanf() functions to read and write values of different types
