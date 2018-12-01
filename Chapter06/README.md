@@ -7,7 +7,7 @@ You will learn about the following in this chapter
   < > >=<br/>
   <= != == +=<br/>
   *= -= /= %=
-* Functions:
+* Functions:<br/>
   fab()
 * C's three loop structures-while, for , and do while
 * Using relational operators to construct expressions to control these loops
