@@ -1,45 +1,37 @@
 // Modify assumption a.in exercise 7 so that the program presents a menu of pay rates from which to choose. Use a 'switch' to select the pay rate.
 #include<stdio.h>
+#include<ctype.h>
 #include<stdbool.h>
 #define OVERTIME 1.50
 #define TAX_FIRST_300 0.15
 #define TAX_NEXT_150 0.20
 #define TAX_REST 0.25
 
+char get_choice(void);
+char get_first(void);
 float get_payment(float hours_work, float pay_rate);
 float get_tax(float payment);
 int main(void)
 {
-    int select_num;
+    int choice;
     float pay_rate;
-    bool quit = false;
     float hours_work;
     float payment, tax, net_pay;
-    while (1)
+    while ((choice = get_choice()) != 'q')
     {
-        printf("*****************************************************************\n");
-        printf("Enter the number corresponding to the desired pay rate or action:\n");
-        printf("1) $8.75/hr            2) $9.33/hr\n");
-        printf("3) $10.00/hr           4) $11.20/hr\n");
-        printf("5) quit\n");
-        printf("*****************************************************************\n");
-        scanf("%d", &select_num);
-        switch (select_num)
+        switch (choice)
         {
-            case 1:
+            case 'a':
                 pay_rate = 8.75;
                 break;
-            case 2:
+            case 'b':
                 pay_rate = 9.33;
                 break;
-            case 3:
+            case 'c':
                 pay_rate = 10.00;
                 break;
-            case 4:
+            case 'd':
                 pay_rate = 11.20;
-                break;
-            case 5:
-                quit = true;
                 break;
             default:
                 while (getchar() != '\n')
@@ -47,9 +39,6 @@ int main(void)
                 printf("Please enter an integer 1 and 5\n");
                 continue;
         }
-        if (quit)
-            break;
-
         printf("Enter hour workded in a week: ");
         if (scanf("%f", &hours_work) != 1 || hours_work <= 0)
         {
@@ -65,6 +54,34 @@ int main(void)
         }
     }    
     return 0;
+}
+
+char get_choice(void)
+{
+    int ch;
+    printf("Enter the letter of your choices:\n");
+    printf("a) $8.75/hr            b) $9.33/hr\n");
+    printf("c) $10.00/hr           d) $11.20/hr\n");
+    printf("q) quit\n");
+    ch = get_first();
+    while ((ch < 'a' || ch > 'c') && ch != 'q')
+    {
+        printf("Please respond with a, b, c, or q.\n");
+        ch = get_first();
+    }
+
+    return ch;
+}
+
+char get_first(void)
+{
+    int ch;
+    while (isspace((ch = getchar())))
+        continue; 
+    while (getchar() != '\n')
+        continue;
+    
+    return ch;
 }
 
 float get_payment(float hours_work, float pay_rate)
