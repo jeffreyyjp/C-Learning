@@ -1,3 +1,4 @@
+# Character Strings and String Functions #
 You will learn about the following in this chapter:<br/>
 * Function:<br/>
   gets(), gets_s(), fgets(), puts(), fputs(), strcat(), strncat(), strcmp(), strncmp(), strcpy(), strncpy(), sprintf(), strchr()

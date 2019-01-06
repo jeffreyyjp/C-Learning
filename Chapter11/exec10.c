@@ -1,0 +1,1 @@
+// Write a function that takes a string as an argument and removes the spaces from the string. Test in a program that uses a loop to read lines until you enter an empty line. The program should apply the function to each input string and display the result.

@@ -1,3 +1,4 @@
+# Character Input/Output and Input Validation #
 You will learn about the following int this chapter:<br/>
 * More about input, output, and the differences between buffered and unbuffered input
 * How to simulate the end-of-file condition from the keyboard

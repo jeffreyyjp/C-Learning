@@ -1,3 +1,4 @@
+# Functions #
 You will learn about the following in this chapter:<br/>
 * Keyword:<br/>
   return

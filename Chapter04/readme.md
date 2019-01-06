@@ -1,3 +1,4 @@
+# Character Strings and Formatted Input/Output #
 You will learn about the following in this chapter:
 * Functions:<br/>
   strlen()
