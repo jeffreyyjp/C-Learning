@@ -8,3 +8,4 @@
 
 # settings files or folders
 .vscode/
+a.out.dSYM/
