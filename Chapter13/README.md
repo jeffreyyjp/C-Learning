@@ -1,4 +1,4 @@
-You will learn about the following in this chapter:
+# You will learn about the following in this chapter: #
 * Functions:<br>
   fopen(), getc(), putc(), exit(), fclose()
   fprintf(), fscanf(), fgets(), fputs()
