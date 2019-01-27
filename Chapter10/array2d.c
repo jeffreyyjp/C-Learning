@@ -4,7 +4,7 @@
 #define COLS 4
 void sum_rows(int ar[][COLS], int rows);
 void sum_cols(int[][COLS], int);
-void sum2d(int (*ar)[COLS], int rows);
+int sum2d(int (*ar)[COLS], int rows);
 int main(void)
 {
     int junk[ROWS][COLS] = {

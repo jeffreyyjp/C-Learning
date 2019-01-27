@@ -1,14 +1,14 @@
-// Create a text file consisting of 20 rows of 30 integers. The integers should be in the range 0-9 and be separated by sapces. The file is a digital representation of a picture, with the values 0 through 9 representing increasing levels of darkness. Write a program that reads the contents of file into a 20-by-30 array of ints. In a crude approach toward converting this digital representation to a picture, have the program use the values in this array to initialize a 20-by-31 array of chars, with a 0 value corresponding to a space character, a 1 value to the period character, and so on, with each larger number represented by a character that occupies more space. For example, you might use # to represent 9. The last character(the 31st) in each row should be a null character, making it an array of 20 strings. Have the program display the resulting picture (that is, print the strings) and also store the result in a text file.
+// Create a text file consisting of 20 ROWSs of 30 integers. The integers should be in the range 0-9 and be separated by sapces. The file is a digital representation of a picture, with the values 0 through 9 representing increasing levels of darkness. Write a program that reads the contents of file into a 20-by-30 array of ints. In a crude approach toward converting this digital representation to a picture, have the program use the values in this array to initialize a 20-by-31 array of chars, with a 0 value corresponding to a space character, a 1 value to the period character, and so on, with each larger number represented by a character that occupies more space. For example, you might use # to represent 9. The last character(the 31st) in each ROWS should be a null character, making it an array of 20 strings. Have the program display the resulting picture (that is, print the strings) and also store the result in a text file.
 #include<stdio.h>
 #include<stdlib.h>
-#define ROW 20
-#define COL 30
+#define ROWS 20
+#define COLS 30
 
 int main(int argc, char const *argv[])
 {
     FILE * fp;
-    int data[ROW][COL];
-    int image[ROW][COL + 1];
+    int data[ROWS][COLS];
+    int image[ROWS][COLS + 1];
     char ch;
     
     if (argc != 3)
@@ -23,9 +23,9 @@ int main(int argc, char const *argv[])
     }
 
     // read ints from file
-    for (int i = 0; i < ROW; i++)
+    for (int i = 0; i < ROWS; i++)
     {
-        for (int j = 0; j < COL; j++)
+        for (int j = 0; j < COLS; j++)
         {
             if (fscanf(fp, "%d", *(data + i) + j) != 1)
             {
@@ -37,10 +37,10 @@ int main(int argc, char const *argv[])
     fclose(fp);
 
     // convert ints to char
-    for (int i = 0; i < ROW; i++)
+    for (int i = 0; i < ROWS; i++)
     {
         int j;
-        for (j = 0; j < COL; j++)
+        for (j = 0; j < COLS; j++)
         {
             switch (data[i][j])
             {
@@ -89,7 +89,7 @@ int main(int argc, char const *argv[])
         fprintf(stderr, "Can't open %s.\n", argv[2]);
         exit(EXIT_FAILURE);
     }
-    for (int i = 0; i < ROW; i++)
+    for (int i = 0; i < ROWS; i++)
     {
         puts(image[i]);
         fprintf(fp, "%s\n", image[i]);
