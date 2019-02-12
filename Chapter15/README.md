@@ -1,3 +1,4 @@
+# Bit Fidding #
 ## You will learn about the following in this chapter: ##
 * Operators:<br>
   \- & | ^<br>
