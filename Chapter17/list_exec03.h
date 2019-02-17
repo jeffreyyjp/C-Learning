@@ -17,12 +17,6 @@ struct film
 
 typedef struct film Item;
 
-typedef struct node
-{
-    Item item;
-    struct node * next;
-} Node;
-
 typedef struct list
 {
     Item entries[MAXSIZE];  /* array of items          */

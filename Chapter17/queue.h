@@ -6,6 +6,8 @@
 /* INSERT ITEM TYPE HERE */
 /* FOR EXAMPLE, */
 // typedef int Item;  // for use_q.c
+
+// for mall.c
 typedef struct item
 {
     long arrive;      // the time when a customer joins the queue
