@@ -157,7 +157,11 @@ static void AddNode(Trnode * new_node, Trnode * root)
             AddNode(new_node, root->right);
     }
     else
+    {
         root->item.count++;
+        free(new_node);
+    }
+        
 }
 
 static bool ToLeft(const Item * i1, const Item * i2)
@@ -228,13 +232,11 @@ static void DeleteNode(Trnode **ptr)
     {
         temp = *ptr;
         *ptr = (*ptr)->right;
-        free(temp);
     }
     else if ((*ptr)->right == NULL)
     {
         temp = *ptr;
         *ptr = (*ptr)->left;
-        free(temp);
     }
     else /* deleted node has two children */
     {
@@ -245,6 +247,7 @@ static void DeleteNode(Trnode **ptr)
         temp->right = (*ptr)->right;
         temp = *ptr;
         *ptr = (*ptr)->left;
-        free(temp);
     }
+
+    free(temp);
 }

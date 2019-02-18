@@ -5,8 +5,7 @@
 #include<ctype.h>
 #include "tree_exec07.h"
 
-char get_choice(void);
-char get_first(void);
+char menu(void);
 void show_word(const Tree * words);
 void search_word(const Tree * words);
 char * s_gets(char * st, int n);
@@ -19,7 +18,7 @@ int main(int argc, char const *argv[])
 
     FILE * fp;
     char word[MAX];
-    int choice;
+    char choice;
 
     InitializeTree(&words);
     if (argc != 2)
@@ -38,8 +37,10 @@ int main(int argc, char const *argv[])
         strcpy(temp.word, word);
         AddItem(&temp, &words);
     }
+    if (fclose(fp) != 0)
+        fprintf(stderr, "Error closing file\n");
 
-    while ((choice = get_choice()) != 'q')
+    while ((choice = menu()) != 'q')
     {
         switch (choice)
         {
@@ -54,9 +55,9 @@ int main(int argc, char const *argv[])
                 break;
         }
     }
+    printf("Tree size is %d\n", TreeItemCount(&words));
 
-    if (fclose(fp) != 0)
-        fprintf(stderr, "Error closing file\n");
+    DeleteAll(&words);
     puts("Bye!");
 
     return 0;
@@ -82,27 +83,24 @@ void printitem(Item item)
     printf("%s has occurred %d times\n", item.word, item.count);
 }
 
-char get_choice(void)
+char menu(void)
 {
     int ch;
     printf("l) list all the words along with the number of occurrences\n");
     printf("s) enter word to get numbers of occurrences\n");
     printf("q) quit\n");
-    ch = get_first();
-    while (ch != 'l' && ch != 's' && ch != 'q')
+    while ((ch = getchar()) != EOF)
     {
-        printf("Please respond with l , s or q.\n");
-        ch = get_first();
+        while (getchar() != '\n')
+            continue;
+        ch = tolower(ch);
+        if (strchr("lsq", ch) == NULL)
+            printf("Please respond with l , s or q.\n");
+        else
+            break;
     }
-
-    return ch;
-}
-
-char get_first(void)
-{
-    int ch;
-    ch = getchar();
-    while (getchar() != '\n') continue;
+    if (ch == EOF) /* make EOF cause programs to quit */
+        ch = 'q';
 
     return ch;
 }

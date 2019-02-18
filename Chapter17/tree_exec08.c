@@ -2,7 +2,7 @@
 #include<stdio.h>
 #include<string.h>
 #include<stdlib.h>
-#include "tree.h"
+#include "tree_exec08.h"
 
 /* local data type */
 typedef struct pair
@@ -18,6 +18,8 @@ static bool ToRight(const Item * i1, const Item * i2);
 static void AddNode(Trnode * new_node, Trnode * root);
 static void InOrder(const Trnode * root, void (* pfun)(Item item));
 static Pair SeekItem(const Item * pi, const Tree * ptree);
+static bool AllNodeFull(const Trnode * root);
+static bool NodeFull(const Trnode * root);
 static void DeleteNode(Trnode **ptr);
 static void DeleteAllNodes(Trnode * ptr);
 
@@ -25,6 +27,7 @@ static void DeleteAllNodes(Trnode * ptr);
 void InitializeTree(Tree * ptree)
 {
     ptree->root = NULL;
+    ptree->root->items = 0;
     ptree->size = 0;
 }
 
@@ -35,7 +38,12 @@ bool TreeIsEmpty(const Tree * ptree)
 
 bool TreeIsFull(const Tree * ptree)
 {
-    return (ptree->size == MAXITEMS) ? true: false;
+    if (ptree->size < MAXNODES)
+        return false;
+    if (ptree->size == MAXNODES)
+    {
+        return AllNodeFull(ptree->root);
+    }
 }
 
 int TreeItemCount(const Tree * ptree)
@@ -50,11 +58,6 @@ bool AddItem(const Item * pi, Tree * ptree)
     if (TreeIsFull(ptree))
     {
         fprintf(stderr, "Tree is full\n");
-        return false;
-    }
-    if (SeekItem(pi, ptree).child != NULL)
-    {
-        fprintf(stderr, "Attempted to add duplicate item\n");
         return false;
     }
     new_node = MakeNode(pi);    /* points to new node */
@@ -189,7 +192,8 @@ static Trnode * MakeNode(const Item * pi)
     new_node = (Trnode *) malloc(sizeof(Trnode));
     if (new_node != NULL)
     {
-        new_node->item = *pi;
+        new_node->item[0] = *pi;
+        new_node->items = 1;
         new_node->left = NULL;
         new_node->right = NULL;
     }
@@ -223,6 +227,25 @@ static Pair SeekItem(const Item * pi, const Tree * ptree)
     }
 
     return look;    /* successful return */
+}
+
+static bool AllNodeFull(const Trnode * root)
+{
+    bool result = true;
+    if (root != NULL)
+    {
+        if (NodeFull(root))
+            result = (AllNodeFull(root->left) && AllNodeFull(root->right));
+        else
+            result = false;
+    }
+
+    return result;
+}
+
+static bool NodeFull(const Trnode * ptr)
+{
+    return ptr->items == MAXITEMS;
 }
 
 static void DeleteNode(Trnode **ptr)

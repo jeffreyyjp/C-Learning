@@ -16,15 +16,15 @@ int main(void)
     int j;
 
     puts("Enter first movie title:");
-    while (i < FMAX && s_gets(movies[i].title, TSIZE) != NULL movies[i].title[0] != '\0')
+    while (i < FMAX && s_gets(movies[i].title, TSIZE) != NULL && movies[i].title[0] != '\0')
     {
         puts("Enter your rating <0-10>:");
         scanf("%d", &movies[i++].rating);
         while (getchar() != '\n') continue;
         puts("Enter next movie title (empty line to stop):");
     }
-    if (i = 0)
-        printf("No data entered. ");
+    if (i == 0)
+        printf("No data entered.\n");
     else
         printf("Here is the movie list:\n");
     
