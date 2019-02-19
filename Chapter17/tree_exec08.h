@@ -40,13 +40,20 @@ void InitializeTree(Tree * ptree);
 /*                   empty and returns false otherwise */
 bool TreeIsEmpty(const Tree * ptree);
 
-/* operation:        determine if tree is full */
+/* operation:        determine if tree reaches its maximum limitation */
 /* precondition:     ptree points to a tree */
-/* postcondition:    function returns true if tree is */
-/*                   full and returns false otherwise */
+/* postcondition:    function returns true if tree reaches */
+/*                   its maximum limitation and returns false otherwise */
 bool TreeIsFull(const Tree * ptree);
 
+/* operatoin:        determine numbers of nodes in tree */
+/* precondition:     ptree points to a tree */
+/* postcondition:    function returns number of nodes in */
+/*                   tree                                */
+int TreeNodeCount(const Tree * ptree);
+
 /* operatoin:        determine numbers of items in tree */
+/*                   each node can contain lots of items */
 /* precondition:     ptree points to a tree */
 /* postcondition:    function returns number of items in */
 /*                   tree                                */

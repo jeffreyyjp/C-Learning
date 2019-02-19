@@ -17,7 +17,7 @@ static bool ToLeft(const Item * i1, const Item * i2);
 static bool ToRight(const Item * i1, const Item * i2);
 static void AddNode(Trnode * new_node, Trnode * root);
 static void InOrder(const Trnode * root, void (* pfun)(Item item));
-static Pair SeekItem(const Item * pi, const Tree * ptree);
+static Pair SeekNode(const Item * pi, const Tree * ptree);
 static bool AllNodeFull(const Trnode * root);
 static bool NodeFull(const Trnode * root);
 static void DeleteNode(Trnode **ptr);
@@ -38,16 +38,17 @@ bool TreeIsEmpty(const Tree * ptree)
 
 bool TreeIsFull(const Tree * ptree)
 {
-    if (ptree->size < MAXNODES)
-        return false;
-    if (ptree->size == MAXNODES)
-    {
-        return AllNodeFull(ptree->root);
-    }
+    return (ptree->size == MAXNODES) ? true: false;
+}
+
+int TreeNodeCount(const Tree * ptree)
+{
+    return ptree->size;
 }
 
 int TreeItemCount(const Tree * ptree)
 {
+    // TODO
     return ptree->size;
 }
 
@@ -78,14 +79,14 @@ bool AddItem(const Item * pi, Tree * ptree)
 
 bool InTree(const Item * pi, const Tree * ptree)
 {
-    return (SeekItem(pi, ptree).child == NULL) ? false: true;
+    return (SeekNode(pi, ptree).child == NULL) ? false: true;
 }
 
 bool DeleteItem(const Item * pi, Tree * ptree)
 {
     Pair look;
 
-    look = SeekItem(pi, ptree);
+    look = SeekNode(pi, ptree);
     if (look.child == NULL)
         return false;
     
@@ -201,7 +202,7 @@ static Trnode * MakeNode(const Item * pi)
     return new_node;
 }
 
-static Pair SeekItem(const Item * pi, const Tree * ptree)
+static Pair SeekNode(const Item * pi, const Tree * ptree)
 {
     Pair look;
     look.parent = NULL;

@@ -6,6 +6,8 @@
 *.exe
 test
 
+# debug files
+core
 
 # settings files or folders
 .vscode/

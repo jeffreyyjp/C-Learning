@@ -13,7 +13,7 @@ typedef struct item
     int count;
 } Item;
 
-#define MAXITEMS 10
+#define MAXNODES 10
 
 typedef struct trnode
 {
@@ -40,17 +40,17 @@ void InitializeTree(Tree * ptree);
 /*                   empty and returns false otherwise */
 bool TreeIsEmpty(const Tree * ptree);
 
-/* operation:        determine if tree is full */
+/* operation:        determine if tree reaches its maximum of node limitation */
 /* precondition:     ptree points to a tree */
-/* postcondition:    function returns true if tree is */
-/*                   full and returns false otherwise */
+/* postcondition:    function returns true if tree reaches */
+/*                   its maximum of node limitation and returns false otherwise */
 bool TreeIsFull(const Tree * ptree);
 
-/* operatoin:        determine numbers of items in tree */
+/* operatoin:        determine numbers of nodes in tree */
 /* precondition:     ptree points to a tree */
-/* postcondition:    function returns number of items in */
+/* postcondition:    function returns number of nodes in */
 /*                   tree                                */
-int TreeItemCount(const Tree * ptree);
+int TreeNodeCount(const Tree * ptree);
 
 /* operation:        add an item to a tree */
 /* precondition:     pi is address of item to be added */

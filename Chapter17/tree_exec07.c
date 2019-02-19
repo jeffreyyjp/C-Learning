@@ -15,9 +15,8 @@ typedef struct pair
 static Trnode * MakeNode(const Item * pi);
 static bool ToLeft(const Item * i1, const Item * i2);
 static bool ToRight(const Item * i1, const Item * i2);
-static void AddNode(Trnode * new_node, Trnode * root);
 static void InOrder(const Trnode * root, void (* pfun)(Item item));
-static Pair SeekItem(const Item * pi, const Tree * ptree);
+static Pair SeekNode(const Item * pi, const Tree * ptree);
 static void DeleteNode(Trnode **ptr);
 static void DeleteAllNodes(Trnode * ptr);
 
@@ -33,12 +32,12 @@ bool TreeIsEmpty(const Tree * ptree)
     return (ptree->root == NULL) ? true: false;
 }
 
-bool TreeIsFull(const Tree * ptree)
+bool TreeIsFull(const Tree * ptree) /* means tree's node reaches its maximum limitation */
 {
-    return (ptree->size == MAXITEMS) ? true: false;
+    return (ptree->size == MAXNODES) ? true: false;
 }
 
-int TreeItemCount(const Tree * ptree)
+int TreeNodeCount(const Tree * ptree)
 {
     return ptree->size;
 }
@@ -46,50 +45,48 @@ int TreeItemCount(const Tree * ptree)
 bool AddItem(const Item * pi, Tree * ptree)
 {
     Trnode * new_node;
-    Trnode * seek_node = SeekItem(pi, ptree).child;
+    Pair look = SeekNode(pi, ptree);
 
-    if (seek_node == NULL) /* pi not yet in ptree */
+    if (look.child == NULL) /* pi not yet in ptree */
     {
-        if (TreeIsFull(ptree)) /* tree is full and pi not in tree, need to create new node, fail */
+        if (TreeIsFull(ptree)) /* Can't add new node to tree */
         {
             fprintf(stderr, "Tree is full\n");
             return false;
         }
+        new_node = MakeNode(pi);    /* points to new node */
+        if (new_node ==  NULL)
+        {
+            fprintf(stderr, "Couldn't create node\n");
+            return false;
+        }
+        ptree->size++;
+        if (ptree->root == NULL)       /* case 1: tree is empty */
+            ptree->root = new_node;    /* new node is tree root */
         else
         {
-            new_node = MakeNode(pi);    /* points to new node */
-            if (new_node ==  NULL)
-            {
-                fprintf(stderr, "Couldn't create node\n");
-                return false;
-            }
+            if (ToLeft(pi, &(look.parent->item)))
+                look.parent->left = new_node;
             else
-            {
-                ptree->size++;
-                if (ptree->root == NULL)       /* case 1: tree is empty */
-                    ptree->root = new_node;    /* new node is tree root */
-                else
-                    AddNode(new_node, ptree->root);  /* add node to tree */
-            }
+                look.parent->right = new_node;
         }
-        
     }
     else /* node contained pi has been add to ptree, add item count */
-        seek_node->item.count++;
+        look.child->item.count++;
 
     return true;
 }
 
 bool InTree(const Item * pi, const Tree * ptree)
 {
-    return (SeekItem(pi, ptree).child == NULL) ? false: true;
+    return (SeekNode(pi, ptree).child == NULL) ? false: true;
 }
 
 bool DeleteItem(const Item * pi, Tree * ptree)
 {
     Pair look;
 
-    look = SeekItem(pi, ptree);
+    look = SeekNode(pi, ptree);
     if (look.child == NULL)
         return false;
     
@@ -122,7 +119,7 @@ int SearchedItemCount(const Item * pi, const Tree * ptree)
 {
     Pair look;
 
-    look = SeekItem(pi, ptree);
+    look = SeekNode(pi, ptree);
     if (look.child == NULL)
         return 0;
     return look.child->item.count;
@@ -150,30 +147,6 @@ static void DeleteAllNodes(Trnode * root)
         free(root);
         DeleteAllNodes(pright);
     }
-}
-
-static void AddNode(Trnode * new_node, Trnode * root)
-{
-    if (ToLeft(&new_node->item, &root->item)) 
-    {
-        if (root->left == NULL)     /* empty left subtree */
-            root->left = new_node;  /* so add node here */
-        else
-            AddNode(new_node, root->left); /* else process subtree */
-    }
-    else if (ToRight(&new_node->item, &root->item))
-    {
-        if (root->right == NULL)    /* empty right subtree */
-            root->right = new_node;
-        else
-            AddNode(new_node, root->right);
-    }
-    else
-    {
-        root->item.count++;
-        free(new_node);
-    }
-        
 }
 
 static bool ToLeft(const Item * i1, const Item * i2)
@@ -207,7 +180,7 @@ static Trnode * MakeNode(const Item * pi)
     return new_node;
 }
 
-static Pair SeekItem(const Item * pi, const Tree * ptree)
+static Pair SeekNode(const Item * pi, const Tree * ptree)
 {
     Pair look;
     look.parent = NULL;
