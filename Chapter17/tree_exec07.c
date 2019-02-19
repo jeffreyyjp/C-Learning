@@ -46,25 +46,37 @@ int TreeItemCount(const Tree * ptree)
 bool AddItem(const Item * pi, Tree * ptree)
 {
     Trnode * new_node;
+    Trnode * seek_node = SeekItem(pi, ptree).child;
 
-    if (TreeIsFull(ptree))
+    if (seek_node == NULL) /* pi not yet in ptree */
     {
-        fprintf(stderr, "Tree is full\n");
-        return false;
+        if (TreeIsFull(ptree)) /* tree is full and pi not in tree, need to create new node, fail */
+        {
+            fprintf(stderr, "Tree is full\n");
+            return false;
+        }
+        else
+        {
+            new_node = MakeNode(pi);    /* points to new node */
+            if (new_node ==  NULL)
+            {
+                fprintf(stderr, "Couldn't create node\n");
+                return false;
+            }
+            else
+            {
+                ptree->size++;
+                if (ptree->root == NULL)       /* case 1: tree is empty */
+                    ptree->root = new_node;    /* new node is tree root */
+                else
+                    AddNode(new_node, ptree->root);  /* add node to tree */
+            }
+        }
+        
     }
-    new_node = MakeNode(pi);    /* points to new node */
-    if (new_node == NULL)
-    {
-        fprintf(stderr, "Couldn't create node\n");
-        return false;
-    }
-    /* succeeded in creating a new node */
-    ptree->size++;
+    else /* node contained pi has been add to ptree, add item count */
+        seek_node->item.count++;
 
-    if (ptree->root == NULL)       /* case 1: tree is empty */
-        ptree->root = new_node;    /* new node is tree root */
-    else
-        AddNode(new_node, ptree->root);  /* add node to tree */
     return true;
 }
 

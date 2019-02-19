@@ -4,6 +4,7 @@
 # Executables
 *.out
 *.exe
+test
 
 
 # settings files or folders

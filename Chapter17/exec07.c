@@ -55,7 +55,6 @@ int main(int argc, char const *argv[])
                 break;
         }
     }
-    printf("Tree size is %d\n", TreeItemCount(&words));
 
     DeleteAll(&words);
     puts("Bye!");
