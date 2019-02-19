@@ -35,7 +35,8 @@ int main(int argc, char const *argv[])
     {
         temp.count = 1;
         strcpy(temp.word, word);
-        AddItem(&temp, &words);
+        if (!AddItem(&temp, &words)
+            fprintf(stderr, "%s can't been added\n", word);
     }
     if (fclose(fp) != 0)
         fprintf(stderr, "Error closing file\n");

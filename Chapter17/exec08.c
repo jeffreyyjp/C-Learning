@@ -34,7 +34,7 @@ int main(void)
                 findpet(&pets);
                 break;
             case 'n':
-                printf("%d pets in club\n", TreeItemCount(&pets));
+                // printf("%d pets in club\n", TreeItemCount(&pets));
                 break;
             case 'd':
                 droppet(&pets);
@@ -79,18 +79,15 @@ void addpet(Tree * pt)
 {
     Item temp;
 
-    if (TreeIsFull(pt))
-        puts("No room in the club!");
-    else
-    {
-        puts("Please enter name of pet:");
-        s_gets(temp.petname, SLEN);
-        puts("Please enter pet kind:");
-        s_gets(temp.petkind, SLEN);
-        uppercase(temp.petname);
-        uppercase(temp.petkind);
-        AddItem(&temp, pt);
-    }
+    puts("Please enter name of pet:");
+    s_gets(temp.petname, SLEN);
+    puts("Please enter pet kind:");
+    s_gets(temp.petkind, SLEN);
+    uppercase(temp.petname);
+    uppercase(temp.petkind);
+    if (!AddItem(&temp, pt))
+        fprintf(stderr, "%s can't been added\n", temp.petname);
+        
 }
 
 void showpets(const Tree * pt)

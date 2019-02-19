@@ -148,8 +148,7 @@ static bool ToLeft(const Item * i1, const Item * i2)
         return true;
     else if (comp1 == 0 && strcmp(i1->petkind, i2->petkind) < 0)
         return true;
-    else
-        return false;
+    return false;
 }
 
 static bool ToRight(const Item * i1, const Item * i2)
@@ -160,8 +159,7 @@ static bool ToRight(const Item * i1, const Item * i2)
         return true;
     else if (comp1 == 0 && strcmp(i1->petkind, i2->petkind) > 0)
         return true;
-    else
-        return false;
+    return false;
 }
 
 static Trnode * MakeNode(const Item * pi)

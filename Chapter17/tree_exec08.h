@@ -4,6 +4,9 @@
 #define _TREE_H_
 #include<stdbool.h>
 
+#define MAXNODES 10
+#define MAXITEMS 20
+
 /* redefine Item as appropriate */
 typedef struct item
 {
@@ -11,13 +14,16 @@ typedef struct item
     char petkind[20];
 } Item;
 
-#define MAXNODES 10
-#define MAXITEMS 20
+typedef struct list
+{
+    char petname[20];
+    Item entries[MAXITEMS];
+    int items;
+} List;
 
 typedef struct trnode
 {
-    Item item[MAXITEMS];
-    int items;
+    List * list;
     struct trnode * left;  /* pointer to left branch */
     struct trnode * right; /* pointer to right branch */
 } Trnode;
@@ -51,13 +57,6 @@ bool TreeIsFull(const Tree * ptree);
 /* postcondition:    function returns number of nodes in */
 /*                   tree                                */
 int TreeNodeCount(const Tree * ptree);
-
-/* operatoin:        determine numbers of items in tree */
-/*                   each node can contain lots of items */
-/* precondition:     ptree points to a tree */
-/* postcondition:    function returns number of items in */
-/*                   tree                                */
-int TreeItemCount(const Tree * ptree);
 
 /* operation:        add an item to a tree */
 /* precondition:     pi is address of item to be added */
