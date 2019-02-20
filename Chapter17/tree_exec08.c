@@ -62,7 +62,7 @@ bool AddItem(const Item * pi, Tree * ptree)
     if (TreeIsFull(ptree))
     {
         fprintf(stderr, "Tree is full\n");
-            return false;
+        return false;
     }
     look = SeekNode((*pi).petname, ptree);
     if (look.child == NULL)
