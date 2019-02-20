@@ -78,6 +78,9 @@ void addpet(Tree * pt)
 {
     Item temp;
 
+    if (TreeIsFull(pt))
+        return;
+
     puts("Please enter name of pet:");
     s_gets(temp.petname, SLEN);
     puts("Please enter pet kind:");

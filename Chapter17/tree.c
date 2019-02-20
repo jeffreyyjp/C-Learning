@@ -68,13 +68,11 @@ bool AddItem(const Item * pi, Tree * ptree)
 
     if (ptree->root == NULL)       /* case 1: tree is empty */
         ptree->root = new_node;    /* new node is tree root */
+    else if (ToLeft(pi, &(look.parent->item)))
+        look.parent->left = new_node;
     else
-    {
-        if (ToLeft(pi, &(look.parent->item)))
-            look.parent->left = new_node;
-        else
-            look.parent->right = new_node;
-    }
+        look.parent->right = new_node;
+        
     return true;
 }
 

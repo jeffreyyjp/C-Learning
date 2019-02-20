@@ -32,7 +32,8 @@ typedef struct trnode
 typedef struct tree
 {
     Trnode * root;         /* pointer to root of tree */
-    int size;              /* number of items in tree */
+    int node_size;              /* number of nodes in tree */
+    int item_size;         /* number of items in tree */
 } Tree;
 
 /* function prototypes */
