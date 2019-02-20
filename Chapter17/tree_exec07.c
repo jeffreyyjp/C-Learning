@@ -151,16 +151,12 @@ static void DeleteAllNodes(Trnode * ptr)
 
 static bool ToLeft(const Item * i1, const Item * i2)
 {
-    if (strcmp(i1->word, i2->word) < 0)
-        return true;
-    return false;
+    return (strcmp(i1->word, i2->word) < 0) ? true: false;
 }
 
 static bool ToRight(const Item * i1, const Item * i2)
 {
-    if(strcmp(i1->word, i2->word) > 0)
-        return true;
-    return false;
+    return (strcmp(i1->word, i2->word) > 0) ? true: false;
 }
 
 static Trnode * MakeNode(const Item * pi)

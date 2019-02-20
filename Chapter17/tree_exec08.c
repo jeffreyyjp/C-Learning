@@ -186,16 +186,12 @@ static bool AddToList(const Item * pi, List * list)
 
 static bool ToLeft(const char * ch1, const char * ch2)
 {
-    if (strcmp(ch1, ch2) < 0)
-        return true;
-    return false;
+    return (strcmp(ch1, ch2) < 0) ? true: false;
 }
 
 static bool ToRight(const char * ch1, const char * ch2)
 {
-    if (strcmp(ch1, ch2) > 0)
-        return true;
-    return false;
+    return (strcmp(ch1, ch2) > 0) ? true: false;
 }
 
 static List * MakeList(const Item * pi)
