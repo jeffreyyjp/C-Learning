@@ -18,10 +18,10 @@ static bool ToLeft(const char * ch1, const char * ch2);
 static bool ToRight(const char * ch1, const char * ch2);
 static bool AddToList(const Item * pi, List * list);
 static void InOrder(const Trnode * root, void (* pfun)(Item item));
-static Pair SeekNode(const Item * pi, const Tree * ptree);
-static bool AllNodeFull(const Trnode * root);
-static bool NodeFull(const Trnode * root);
+static Pair SeekNode(const char * name, const Tree * ptree);
+static int GetAllItems(Trnode * ptr);
 static void DeleteNode(Trnode **ptr);
+static void DeleteFromList(const Item * pi, List * list);
 static void DeleteAllNodes(Trnode * ptr);
 
 /* function definitions */
@@ -41,15 +41,18 @@ bool TreeIsFull(const Tree * ptree)
     return (ptree->size == MAXNODES) ? true: false;
 }
 
-int TreeNodeCount(const Tree * ptree)
+int TreeItemCount(const Tree * ptree)
 {
-    return ptree->size;
+    int count = 0;
+    if (ptree->root != NULL)
+        count = GetAllItems(ptree->root);
+    return count;
 }
 
 bool AddItem(const Item * pi, Tree * ptree)
 {
     Trnode * new_node;
-    Pair look = SeekNode(pi, ptree);
+    Pair look = SeekNode((*pi).petname, ptree);
     if (look.child == NULL)
     {
         if (TreeIsFull(ptree))
@@ -83,35 +86,31 @@ bool AddItem(const Item * pi, Tree * ptree)
     return true;
 }
 
-bool InTree(const Item * pi, const Tree * ptree)
+Trnode * InTree(const char * name, const Tree * ptree)
 {
-    // return (SeekNode(pi, ptree).child == NULL) ? false: true;
-    Pair look = SeekNode(pi, ptree);
-    if (look.child == NULL)
-        return false;
-    for (int i = 0; i < look.child->list->items; i++)
-    {
-        if (strcmp((*pi).petkind, look.child->list->entries[i].petkind))
-            return true;
-    }
-    return false;
+    return SeekNode(name, ptree).child;
 }
 
 bool DeleteItem(const Item * pi, Tree * ptree)
 {
     Pair look;
 
-    look = SeekNode(pi, ptree);
+    look = SeekNode((*pi).petname, ptree);
     if (look.child == NULL)
         return false;
-    
-    if (look.parent == NULL)    /* delete root item */
-        DeleteNode(&ptree->root);
-    else if (look.parent->left == look.child)
-        DeleteNode(&look.parent->left);
+
+    if (look.child->list->items == 1) /* Node holding list has only one item, drop entire Node */
+    {
+        ptree->size--;
+        if (look.parent == NULL)
+            DeleteNode(&ptree->root);
+        else if (look.parent->left = look.child)
+            DeleteNode(&look.parent->left);
+        else
+            DeleteNode(&look.parent->right);
+    }
     else
-        DeleteNode(&look.parent->right);
-    ptree->size--;
+        DeleteFromList(pi, look.child->list);
 
     return true;
 }
@@ -133,24 +132,34 @@ void DeleteAll(Tree * ptree)
 /* local functions */
 static void InOrder(const Trnode * root, void (*pfun)(Item item))
 {
+    int count;
     if (root != NULL)
     {
+        count = root->list->items;
         InOrder(root->left, pfun);
-        for (int i = 0; i < root->list->items; i++)
-        (*pfun)(root->list->entries[i]);
+        for (int i = 0; i < count; i++)
+            (*pfun)(root->list->entries[i]);
         InOrder(root->right, pfun);
     }
 }
 
-static void DeleteAllNodes(Trnode * root)
+static int GetAllItems(Trnode * ptr)
+{
+    if (ptr == NULL)
+        return (0);
+    return (GetAllItems(ptr->left) + ptr->list->items + GetAllItems(ptr->right));
+}
+
+static void DeleteAllNodes(Trnode * ptr)
 {
     Trnode * pright;
 
-    if (root != NULL)
+    if (ptr != NULL)
     {
-        pright = root->right;
-        DeleteAllNodes(root->left);
-        free(root);
+        pright = ptr->right;
+        DeleteAllNodes(ptr->left);
+        free(ptr->list);
+        free(ptr);
         DeleteAllNodes(pright);
     }
 }
@@ -160,6 +169,7 @@ static bool AddToList(const Item * pi, List * list)
     if (list->items == MAXITEMS)
         return false;
     list->entries[list->items] = *pi;
+    list->items++;
     return true;
 }
 
@@ -210,7 +220,7 @@ static Trnode * MakeNode(const Item * pi)
     return new_node;
 }
 
-static Pair SeekNode(const Item * pi, const Tree * ptree)
+static Pair SeekNode(const char * name, const Tree * ptree)
 {
     Pair look;
     look.parent = NULL;
@@ -221,12 +231,12 @@ static Pair SeekNode(const Item * pi, const Tree * ptree)
     
     while (look.child != NULL)
     {
-        if (ToLeft((*pi).petname, look.child->list->petname))
+        if (ToLeft(name, look.child->list->petname))
         {
             look.parent = look.child;
             look.child = look.child->left;
         }
-        else if (ToRight((*pi).petname, look.child->list->petname))
+        else if (ToRight(name, look.child->list->petname))
         {
             look.parent = look.child;
             look.child = look.child->right;
@@ -236,25 +246,6 @@ static Pair SeekNode(const Item * pi, const Tree * ptree)
     }
 
     return look;    /* successful return */
-}
-
-static bool AllNodeFull(const Trnode * root)
-{
-    bool result = true;
-    if (root != NULL)
-    {
-        if (NodeFull(root))
-            result = (AllNodeFull(root->left) && AllNodeFull(root->right));
-        else
-            result = false;
-    }
-
-    return result;
-}
-
-static bool NodeFull(const Trnode * ptr)
-{
-    return ptr->items == MAXITEMS;
 }
 
 static void DeleteNode(Trnode **ptr)
@@ -283,5 +274,26 @@ static void DeleteNode(Trnode **ptr)
         *ptr = (*ptr)->left;
     }
 
+    free(temp->list);
     free(temp);
+}
+
+static void DeleteFromList(const Item * pi, List * list)
+{
+    if (pi == NULL || list == NULL)
+        return;
+    
+    int count = list->items;
+    int index;
+    for (int i = 0; i < count; i++)
+    {
+        if (strcmp(pi->petkind, list->entries[i].petkind) == 0)
+        {
+            index = i;
+            break;
+        }
+    }
+    for (int i = index; i < count - 1; i++)
+        strcpy(list->entries[i].petkind, list->entries[i+1].petkind);
+    list->items--;
 }

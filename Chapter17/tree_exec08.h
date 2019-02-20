@@ -4,19 +4,20 @@
 #define _TREE_H_
 #include<stdbool.h>
 
+#define SLEN 20
 #define MAXNODES 10
 #define MAXITEMS 20
 
 /* redefine Item as appropriate */
 typedef struct item
 {
-    char petname[20];
-    char petkind[20];
+    char petname[SLEN];
+    char petkind[SLEN];
 } Item;
 
 typedef struct list
 {
-    char petname[20];
+    char petname[SLEN];
     Item entries[MAXITEMS];
     int items;
 } List;
@@ -52,11 +53,11 @@ bool TreeIsEmpty(const Tree * ptree);
 /*                   its maximum limitation and returns false otherwise */
 bool TreeIsFull(const Tree * ptree);
 
-/* operatoin:        determine numbers of nodes in tree */
+/* operatoin:        determine numbers of items in tree */
 /* precondition:     ptree points to a tree */
-/* postcondition:    function returns number of nodes in */
+/* postcondition:    function returns number of items in */
 /*                   tree                                */
-int TreeNodeCount(const Tree * ptree);
+int TreeItemCount(const Tree * ptree);
 
 /* operation:        add an item to a tree */
 /* precondition:     pi is address of item to be added */
@@ -71,7 +72,7 @@ bool AddItem(const Item * pi, Tree * ptree);
 /*                   ptree points to an initialized tree */
 /* postcondition:    function returns true if item is in */
 /*                   tree and returns false otherwise */
-bool InTree(const Item * pi, const Tree * ptree);
+Trnode * InTree(const char * name, const Tree * ptree);
 
 /* operation:        delete an item from a tree */
 /* precondition:     pi is address of item to be deleted */

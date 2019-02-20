@@ -3,7 +3,6 @@
 #include<string.h>
 #include<ctype.h>
 #include "tree_exec08.h"
-#define SLEN 20
 
 char menu(void);
 void addpet(Tree * pt);
@@ -34,7 +33,7 @@ int main(void)
                 findpet(&pets);
                 break;
             case 'n':
-                // printf("%d pets in club\n", TreeItemCount(&pets));
+                printf("%d pets in club\n", TreeItemCount(&pets));
                 break;
             case 'd':
                 droppet(&pets);
@@ -105,7 +104,9 @@ void printitem(Item item)
 
 void findpet(const Tree * pt)
 {
-    Item temp;
+    char * name;
+    Trnode * find_node;
+    int count;
 
     if (TreeIsEmpty(pt))
     {
@@ -114,16 +115,17 @@ void findpet(const Tree * pt)
     }
 
     puts("Please enter name of pet you wish to find:");
-    s_gets(temp.petname, SLEN);
-    puts("Please enter pet kind:");
-    s_gets(temp.petkind, SLEN);
-    uppercase(temp.petname);
-    uppercase(temp.petkind);
-    printf("%s the %s ", temp.petname, temp.petkind);
-    if (InTree(&temp, pt))
-        printf("is a member.\n");
+    s_gets(name, SLEN);
+    uppercase(name);
+    find_node = InTree(name, pt);
+    if (find_node != NULL)
+    {
+        count = find_node->list->items;
+        for (int i = 0; i < count; i++)
+            printf("%s has %s\n", name, find_node->list->entries[i].petkind);
+    }
     else
-        printf("is not a member.\n");
+        printf("%s is not a member.\n", name);
 }
 
 void droppet(Tree * pt)

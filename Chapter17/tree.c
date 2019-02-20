@@ -127,15 +127,15 @@ static void InOrder(const Trnode * root, void (*pfun)(Item item))
     }
 }
 
-static void DeleteAllNodes(Trnode * root)
+static void DeleteAllNodes(Trnode * ptr)
 {
     Trnode * pright;
 
-    if (root != NULL)
+    if (ptr != NULL)
     {
-        pright = root->right;
-        DeleteAllNodes(root->left);
-        free(root);
+        pright = ptr->right;
+        DeleteAllNodes(ptr->left);
+        free(ptr);
         DeleteAllNodes(pright);
     }
 }
