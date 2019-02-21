@@ -35,14 +35,16 @@ int days(const struct month[MONTHS], char *);
 int main(int argc, char const *argv[])
 {
     char name[SLEN];
+    int total;
     
     puts("Please enter month name:");
     while (s_gets(name, SLEN) && name[0] != '\0')
     {
-        if (days(months, name) == -1)
+        total = days(months, name);
+        if (total == -1)
             printf("Invalid month name.\n");
         else
-            printf("days in the year up to %s = %d\n", name, days(months, name));
+            printf("days in the year up to %s = %d\n", name, total);
         puts("Please enter month name:");
     } 
 
