@@ -1,4 +1,4 @@
-// Revise the book-listing program in Listing 14.2 so that it prints the book descriptions in the order entered, then alphabetized by title, and then in order of increased value.
+// Revise the book-listing program in Listing 14.2(manybook.c) so that it prints the book descriptions in the order entered, then alphabetized by title, and then in order of increased value.
 #include<stdio.h>
 #include<string.h>
 char * s_gets(char *, int);
