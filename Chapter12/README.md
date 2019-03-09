@@ -1,6 +1,5 @@
 # Storage Classes, Linkage, and Memory Management #
-## Storage Classes, Linkage, and Memory Management ##
-You will learn about the following in this chapter:
+## You will learn about the following in this chapter: ##
 * Keywords:<br/>
   auto, extern, static, register, const, volatile, restricted, _Thread_local, _Atomic
 * Functions:<br/>
